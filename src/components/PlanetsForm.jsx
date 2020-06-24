@@ -3,29 +3,29 @@ import Input from "./common/Input";
 import Button from './common/Button';
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from 'react-redux'
-import { addPerson, updatePerson } from '../store/actions/people'
-import { getPersonById } from '../store/selectors/people'
+import { addPlanet, updatePlanet } from '../store/actions/planets'
+import { getPlanetById } from '../store/selectors/planets'
 
 
-import {peopleColumns} from "../services/peopleService";
+import {planetsColumns} from "../services/planetsService";
 
-const initialPersonData = peopleColumns.reduce((columns, columnName) => {
+const initialPlanetData = planetsColumns.reduce((columns, columnName) => {
     columns[columnName] = '';
     return columns;
 }, {})
 
-const PeopleForm = ({setPeople, people, history, match}) => {
+const PlanetsForm = ({setPlanets, planets, history, match}) => {
     const [formErrors, setFormErrors] = useState({});
-    const [personData, setPersonData] = useState({...initialPersonData});
+    const [planetData, setPlanetData] = useState({...initialPlanetData});
     const [editMode, setEditMode] = useState(false);
     const dispatch = useDispatch();
-    const ddata = useSelector(state => getPersonById(state, match.params.id))[0]
+    const ddata = useSelector(state => getPlanetById(state, match.params.id))[0]
 
     useEffect(() => {
-        const personId = match.params.id;
-        if (personId === "new") return;
+        const planetId = match.params.id;
+        if (planetId === "new") return;
 
-        setPersonData(ddata)
+        setPlanetData(ddata)
         setEditMode(true);
         console.log(ddata)
     }, [])
@@ -43,45 +43,45 @@ const PeopleForm = ({setPeople, people, history, match}) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        const errors = validate(personData);
+        const errors = validate(planetData);
 
         if (Object.keys(errors).length) {
             return;
         }
 
         if (editMode) {
-            dispatch(updatePerson(personData))
+            dispatch(updatePlanet(planetData))
         } else {
-            dispatch(addPerson({...personData, beloved: false, id: nanoid()}))
-            // setPeople( people, {...personData, beloved: false, id: nanoid()});
+            dispatch(addPlanet({...planetData, beloved: false, id: nanoid()}))
+            // setPlanets( planets, {...planetData, beloved: false, id: nanoid()});
         }
-        history.push('/')
+        history.push('/planets')
     }
 
     const handleChange = (event) => {
         const {currentTarget: input} = event;
-        const data = {...personData};
+        const data = {...planetData};
         const errors = {...formErrors};
         if (errors[input.name]) {
             delete errors[input.name];
         }
 
         data[input.name] = input.value;
-        setPersonData(data);
+        setPlanetData(data);
         setFormErrors(errors)
         console.log(input.value)
     }
 
     return (
         <form>
-            {peopleColumns.map(peopleColName => (
+            {planetsColumns.map(planetsColName => (
                 <Input
-                    key={peopleColName}
-                    name={peopleColName}
-                    label={peopleColName[0].toUpperCase() + peopleColName.slice(1)}
-                    value={personData[peopleColName]}
-                    type={peopleColName === 'beloved' ? 'checkbox' : 'input'}
-                    error={formErrors[peopleColName]}
+                    key={planetsColName}
+                    name={planetsColName}
+                    label={planetsColName[0].toUpperCase() + planetsColName.slice(1)}
+                    value={planetData[planetsColName]}
+                    type={planetsColName === 'beloved' ? 'checkbox' : 'input'}
+                    error={formErrors[planetsColName]}
                     onChange={event => handleChange(event)}
                 />
             ))}
@@ -95,4 +95,4 @@ const PeopleForm = ({setPeople, people, history, match}) => {
     );
 };
 
-export default PeopleForm;
+export default PlanetsForm;

@@ -6,6 +6,7 @@ export const peopleColumns = [
     'mass',
     'gender',
     'birth_year',
+    'beloved',
 ]
 
 export const getPeople = async () => {

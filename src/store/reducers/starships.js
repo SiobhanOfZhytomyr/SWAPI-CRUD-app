@@ -1,7 +1,8 @@
 import {SET_STARSHIPS, UPDATE_STARSHIP, DELETE_STARSHIP, CHANGE_BELOVED_STATUS, ADD_STARSHIP} from '../actions/starships'
-
+import {SET_FILTER, VISIBILITY_FILTER} from '../actions/visibilityFilters'
 const initialState = {
-  allStarships: []
+  allStarships: [],
+  filter: VISIBILITY_FILTER.ALL,
 }
 
 function starships(state = initialState, action) {
@@ -30,6 +31,10 @@ function starships(state = initialState, action) {
           return strshp.id === action.starship.id ? {...action.starship, id: strshp.id} : strshp
         })
       };
+      case SET_FILTER:
+        return {...state,
+        filter: action.filter,
+        };
     default:
       return state;
   }

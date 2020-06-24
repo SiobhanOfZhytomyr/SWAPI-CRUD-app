@@ -1,7 +1,8 @@
 import {SET_PLANETS, UPDATE_PLANET, DELETE_PLANET, CHANGE_BELOVED_STATUS, ADD_PLANET} from '../actions/planets'
-
+import {SET_FILTER, VISIBILITY_FILTER} from '../actions/visibilityFilters'
 const initialState = {
-  allPlanets: []
+  allPlanets: [],
+  filter: VISIBILITY_FILTER.ALL,
 }
 
 function planets(state = initialState, action) {
@@ -30,6 +31,10 @@ function planets(state = initialState, action) {
           return plnt.id === action.planet.id ? {...action.planet, id: plnt.id} : plnt
         })
       };
+      case SET_FILTER:
+        return {...state,
+        filter: action.filter,
+        };
     default:
       return state;
   }

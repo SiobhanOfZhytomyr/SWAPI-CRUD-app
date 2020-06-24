@@ -1,7 +1,9 @@
 import {SET_PEOPLE, DELETE_PERSON, CHANGE_BELOVED_STATUS, ADD_PERSON, UPDATE_PERSON} from '../actions/people'
+import {SET_FILTER, VISIBILITY_FILTER} from '../actions/visibilityFilters'
 
 const initialState = {
-  allPeople: []
+  allPeople: [],
+  filter: VISIBILITY_FILTER.ALL,
 }
 
 function people(state = initialState, action) {
@@ -30,6 +32,10 @@ function people(state = initialState, action) {
           return pers.id === action.person.id ? {...action.person, id: pers.id} : pers
         })
       };
+    case SET_FILTER:
+      return {...state,
+      filter: action.filter,
+      }
     default:
       return state;
   }
